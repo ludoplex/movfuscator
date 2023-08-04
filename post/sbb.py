@@ -32,7 +32,7 @@ with open(sys.argv[1], 'w') as f:
     f.write(".section .text\n")
     for l in asm:
         if l.startswith("mov"):
-            f.write("#sbb> " + l)
+            f.write(f"#sbb> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:

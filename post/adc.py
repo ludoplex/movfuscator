@@ -32,7 +32,7 @@ with open(sys.argv[1], 'w') as f:
     f.write(".section .text\n")
     for l in asm:
         if l.startswith("mov"):
-            f.write("#adc> " + l)
+            f.write(f"#adc> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:
@@ -56,11 +56,11 @@ with open(sys.argv[1], 'w') as f:
             # ridiculous register shuffling necessary b/c ebx is 
             # our last byte addressable register
 
-            for i in xrange(0,b):
+            for _ in xrange(0,b):
                 f.write("adcl $0, (.carry_collector)\n")
                 f.write("adc%s %s, %s\n" % (s, reg, reg))
 
-            for i in xrange(0,b):
+            for _ in xrange(0,b):
                 f.write("adcl $0, (.carry_collector)\n")
                 f.write("adcl %esi, %esi\n")
 
@@ -69,14 +69,14 @@ with open(sys.argv[1], 'w') as f:
             f.write("adcl $0, (.carry_collector)\n")
             f.write("adcl %ebx, %esi\n")
 
-            for i in xrange(0,b):
+            for _ in xrange(0,b):
                 f.write("adcl $0, (.carry_collector)\n")
                 f.write("adc%s %s, %s\n" % (s, reg, reg))
 
             f.write("adcl $0, (.carry_collector)\n")
             f.write("adc%s %s, %s\n" % (s, dest, reg))
 
-            for i in xrange(0,b):
+            for _ in xrange(0,b):
                 f.write("adcl $0, (.carry_collector)\n")
                 f.write("adc%s %s, %s\n" % (s, reg, dest))
                 f.write("adcl $0, (.carry_collector)\n")

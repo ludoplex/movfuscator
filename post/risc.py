@@ -28,13 +28,13 @@ def ismem(term):
 
 def compose(offset, base, index, scale):
     if not base and not index and not scale:
-        return "(%s)" % offset
+        return f"({offset})"
     elif not index and not scale:
-        return "%s(%s)" % (offset, base)
+        return f"{offset}({base})"
     elif not scale:
-        return "%s(%s,%s,1)" % (offset, base, index)
+        return f"{offset}({base},{index},1)"
     else:
-        return "%s(%s,%s,%s)" % (offset, base, index, scale)
+        return f"{offset}({base},{index},{scale})"
 
 def decompose(term):
     offset = base = index = scale = ""

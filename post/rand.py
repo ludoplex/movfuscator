@@ -23,7 +23,7 @@ import random
 import hashlib
 
 def o_adc(f, l):
-    f.write("#adc> " + l)
+    f.write(f"#adc> {l}")
 
     tok = l.find(",", l.find(")"))
     if tok == -1:
@@ -47,11 +47,11 @@ def o_adc(f, l):
     # ridiculous register shuffling necessary b/c ebx is 
     # our last byte addressable register
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("adcl $0, (.carry_collector)\n")
         f.write("adc%s %s, %s\n" % (s, reg, reg))
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("adcl $0, (.carry_collector)\n")
         f.write("adcl %esi, %esi\n")
 
@@ -60,14 +60,14 @@ def o_adc(f, l):
     f.write("adcl $0, (.carry_collector)\n")
     f.write("adcl %ebx, %esi\n")
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("adcl $0, (.carry_collector)\n")
         f.write("adc%s %s, %s\n" % (s, reg, reg))
 
     f.write("adcl $0, (.carry_collector)\n")
     f.write("adc%s %s, %s\n" % (s, dest, reg))
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("adcl $0, (.carry_collector)\n")
         f.write("adc%s %s, %s\n" % (s, reg, dest))
         f.write("adcl $0, (.carry_collector)\n")
@@ -79,7 +79,7 @@ def o_adc(f, l):
     f.write("adc%s %s, %s\n" % (s, reg, dest))
 
 def o_add(f, l):
-    f.write("#add> " + l)
+    f.write(f"#add> {l}")
 
     tok = l.find(",", l.find(")"))
     if tok == -1:
@@ -103,21 +103,21 @@ def o_add(f, l):
     # ridiculous register shuffling necessary b/c ebx is 
     # our last byte addressable register
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("add%s %s, %s\n" % (s, reg, reg))
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("addl %esi, %esi\n")
 
     f.write("add%s %s, %s\n" % (s, source, reg))
     f.write("addl %ebx, %esi\n")
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("add%s %s, %s\n" % (s, reg, reg))
 
     f.write("add%s %s, %s\n" % (s, dest, reg))
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("add%s %s, %s\n" % (s, reg, dest))
         f.write("add%s %s, %s\n" % (s, reg, reg))
 
@@ -125,7 +125,7 @@ def o_add(f, l):
     f.write("add%s %s, %s\n" % (s, reg, dest))
 
 def o_andor(f, l):
-    f.write("#andor> " + l)
+    f.write(f"#andor> {l}")
 
     tok = l.find(",", l.find(")"))
     if tok == -1:
@@ -149,7 +149,7 @@ def o_andor(f, l):
     f.write("or%s  %s, %s\n" % (s, reg, dest))
 
 def o_rrrrr(f, l):
-    f.write("#rrr> " + l)
+    f.write(f"#rrr> {l}")
 
     tok = l.find(",", l.find(")"))
     if tok == -1:
@@ -175,7 +175,7 @@ def o_rrrrr(f, l):
 
     f.write("rcr%s %s\n" % (s, source))
 
-    for i in range(0,b):
+    for _ in range(0,b):
         f.write("rcr%s %s\n" % (s, reg))
         f.write("sar%s %s\n" % (s, reg))
         f.write("rcl%s %s\n" % (s, reg))
@@ -183,12 +183,12 @@ def o_rrrrr(f, l):
         f.write("rcl%s %s\n" % (s, reg))
         f.write("rcr%s %s\n" % (s, source))
 
-    for i in range(0,b):
+    for _ in range(0,b):
         f.write("rcr%s %s\n" % (s, t))
         f.write("rcr%s %s\n" % (s, dest))
 
 def o_sbb(f, l):
-    f.write("#sbb> " + l)
+    f.write(f"#sbb> {l}")
 
     tok = l.find(",", l.find(")"))
     if tok == -1:
@@ -230,7 +230,7 @@ def o_sbb(f, l):
     f.write("sbb%s %s, %s\n" % (s, reg, dest))
 
 def o_sub(f, l):
-    f.write("#sub> " + l)
+    f.write(f"#sub> {l}")
 
     tok = l.find(",", l.find(")"))
     if tok == -1:
@@ -262,7 +262,7 @@ def o_sub(f, l):
     f.write("sub%s %s, %s\n" % (s, reg, dest))
 
 def o_xadd(f, l):
-    f.write("#xadd> " + l)
+    f.write(f"#xadd> {l}")
 
     tok = l.find(",", l.find(")"))
     if tok == -1:
@@ -286,10 +286,10 @@ def o_xadd(f, l):
     # ridiculous register shuffling necessary b/c ebx is 
     # our last byte addressable register
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("xadd%s %s, %s\n" % (s, reg, reg))
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("xaddl %esi, %esi\n")
 
     f.write("xadd%s %s, %s\n" % (s, reg, source))
@@ -297,7 +297,7 @@ def o_xadd(f, l):
 
     f.write("xadd%s %s, %s\n" % (s, reg, dest))
 
-    for i in xrange(0,b):
+    for _ in xrange(0,b):
         f.write("xadd%s %s, %s\n" % (s, reg, dest))
         f.write("xadd%s %s, %s\n" % (s, reg, reg))
 
@@ -313,7 +313,7 @@ with open(sys.argv[1]) as f:
 with open(sys.argv[1], 'w') as f:
     for l in asm:
         if l.startswith("mov"):
-            f.write("#constant> " + l)
+            f.write(f"#constant> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:

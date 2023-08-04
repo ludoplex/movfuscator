@@ -39,7 +39,7 @@ with open(sys.argv[1], 'w') as f:
 
             # NOTE: requires M/o/Vfuscator to only produce dword constants
             if source.startswith("$"):
-                f.write("#constant> " + l)
+                f.write(f"#constant> {l}")
 
                 # have to jump through some hoops due to as and ld limitations
                 # on absolutes 
@@ -69,7 +69,7 @@ with open(sys.argv[1], 'w') as f:
 
     for l in asm:
         if l.startswith("mov"):
-            f.write("#mov32> " + l)
+            f.write(f"#mov32> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:
@@ -101,10 +101,10 @@ with open(sys.argv[1]) as f:
 with open(sys.argv[1], 'w') as f:
     f.write("# section padding\n")
     f.write(".section .data\n")
-    for i in xrange(0,(XFER_SIZE+1)/4):
+    for _ in xrange(0,(XFER_SIZE+1)/4):
         f.write(".long 0\n")
     f.write(".section .bss\n")
-    for i in xrange(0,(XFER_SIZE+1)/4):
+    for _ in xrange(0,(XFER_SIZE+1)/4):
         f.write(".long 0\n")
     f.write("# end padding\n")
     f.write("# mov32 shuffle space\n")
@@ -126,10 +126,10 @@ with open(sys.argv[1], 'w') as f:
         f.write(l)
     f.write("# section padding\n")
     f.write(".section .data\n")
-    for i in xrange(0,(XFER_SIZE+1)/4):
+    for _ in xrange(0,(XFER_SIZE+1)/4):
         f.write(".long 0\n")
     f.write(".section .bss\n")
-    for i in xrange(0,(XFER_SIZE+1)/4):
+    for _ in xrange(0,(XFER_SIZE+1)/4):
         f.write(".long 0\n")
     f.write("# end padding\n")
 
@@ -141,7 +141,7 @@ with open(sys.argv[1]) as f:
 with open(sys.argv[1], 'w') as f:
     for l in asm:
         if l.startswith("mov"):
-            f.write("#mov32> " + l)
+            f.write(f"#mov32> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:
@@ -156,14 +156,14 @@ with open(sys.argv[1], 'w') as f:
                     # r8 -> m8
                     r32 = "%%e%cx" % source[1]
                     m = dest[dest.index("(")+1:dest.index(")")]
-                    if not "%" in m:
+                    if "%" not in m:
                         # "(b)" format
                         b = m
                         si = ""
                     else:
                         # "b(si)" format
                         b = dest[:dest.index("(")]
-                        si = "(" + m + ")"
+                        si = f"({m})"
 
                     f.write("movl %s, (.s_b0)\n" % r32)
 
@@ -184,14 +184,14 @@ with open(sys.argv[1], 'w') as f:
                     # m8 -> r8
                     r32 = "%%e%cx" % dest[1]
                     m = source[source.index("(")+1:source.index(")")]
-                    if not "%" in m:
+                    if "%" not in m:
                         # "(b)" format
                         b = m
                         si = ""
                     else:
                         # "b(si)" format
                         b = source[:source.index("(")]
-                        si = "(" + m + ")"
+                        si = f"({m})"
 
                     f.write("movl %s, (.r_b0)\n" % r32)
 
@@ -217,14 +217,14 @@ with open(sys.argv[1], 'w') as f:
                     # r16 -> m16
                     r32 = "%%e%cx" % source[1]
                     m = dest[dest.index("(")+1:dest.index(")")]
-                    if not "%" in m:
+                    if "%" not in m:
                         # "(b)" format
                         b = m
                         si = ""
                     else:
                         # "b(si)" format
                         b = dest[:dest.index("(")]
-                        si = "(" + m + ")"
+                        si = f"({m})"
 
                     f.write("movl %s, (.s_b0)\n" % r32)
 
@@ -239,14 +239,14 @@ with open(sys.argv[1], 'w') as f:
                     # m16 -> r16
                     r32 = "%%e%cx" % dest[1]
                     m = source[source.index("(")+1:source.index(")")]
-                    if not "%" in m:
+                    if "%" not in m:
                         # "(b)" format
                         b = m
                         si = ""
                     else:
                         # "b(si)" format
                         b = source[:source.index("(")]
-                        si = "(" + m + ")"
+                        si = f"({m})"
 
                     f.write("movl %s, (.r_b0)\n" % r32)
 

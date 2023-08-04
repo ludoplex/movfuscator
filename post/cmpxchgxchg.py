@@ -27,7 +27,7 @@ with open(sys.argv[1]) as f:
 with open(sys.argv[1], 'w') as f:
     for l in asm:
         if l.startswith("mov"):
-            f.write("#constant> " + l)
+            f.write(f"#constant> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:
@@ -70,7 +70,7 @@ asm = [l.replace('%ah', '%bh') for l in asm]
 with open(sys.argv[1], 'w') as f:
     for l in asm:
         if l.startswith("mov"):
-            f.write("#cmpxchgxchg> " + l)
+            f.write(f"#cmpxchgxchg> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:

@@ -26,10 +26,14 @@ import random
 SWAP_PASSES = 10
 
 def next_mov(asm, i):
-    for k in range(i+1, len(asm)):
-        if asm[k].startswith("mov"):
-            return (k, asm[k])
-    return (-1,"")
+    return next(
+        (
+            (k, asm[k])
+            for k in range(i + 1, len(asm))
+            if asm[k].startswith("mov")
+        ),
+        (-1, ""),
+    )
 
 # assumes only eax, ebx, ecx, edx are emitted by compiler
 def gen_reg(l):
@@ -102,12 +106,7 @@ def can_swap(l1, l2):
             return False
         if s1 != s2:
             return False
-    if dest2 in source1:
-        return False
-    if dest2 in dest1:
-        return False
-
-    return True
+    return False if dest2 in source1 else dest2 not in dest1
 
 with open(sys.argv[1]) as f:
     asm = f.readlines()

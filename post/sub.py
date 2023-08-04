@@ -26,7 +26,7 @@ asm = [l.replace('ebx', 'ebp') for l in asm]
 with open(sys.argv[1], 'w') as f:
     for l in asm:
         if l.startswith("mov"):
-            f.write("#sub> " + l)
+            f.write(f"#sub> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:

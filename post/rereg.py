@@ -28,14 +28,14 @@ n = 4
 # assumes compiler only emits eax, ebx, ecx, edx
 free_regs = ['A', 'B', 'C', 'D']
 
-alloc = dict()
+alloc = {}
 
 def getfree():
     random.shuffle(free_regs)
     return free_regs.pop()
 
 def free(r):
-    if not r in free_regs:
+    if r not in free_regs:
         free_regs.append(r)
 
 def getnext():
@@ -101,13 +101,10 @@ def genreg(l):
     if "TR3" in dest:
         dest = dest.replace("TR3", "r%d" % r3)
 
-    return "mov%s %s, %s" % (s, source, dest)
+    return f"mov{s} {source}, {dest}"
 
 def is_used(r, asm, i):
-    for k in range(i+1, len(asm)):
-        if r in asm[k]:
-            return True
-    return False
+    return any(r in asm[k] for k in range(i+1, len(asm)))
 
 def rereg(l, asm, i):
     global alloc
@@ -127,26 +124,26 @@ def rereg(l, asm, i):
 
     source_regs = re.findall(r'r\d+_', source)
     for r in source_regs:
-        if not r in alloc:
+        if r not in alloc:
             alloc[r] = getfree()
-        source = source.replace(r, alloc[r] + "_")
+        source = source.replace(r, f"{alloc[r]}_")
 
     for r in source_regs:
-        if not r in dest:
+        if r not in dest:
             if not is_used(r, asm, i+1):
                 free(alloc[r])
 
     dest_regs = re.findall(r'r\d+_', dest)
     for r in dest_regs:
-        if not r in alloc:
+        if r not in alloc:
             alloc[r] = getfree()
-        dest = dest.replace(r, alloc[r] + "_")
+        dest = dest.replace(r, f"{alloc[r]}_")
 
     for r in dest_regs:
         if not is_used(r, asm, i+1):
             free(alloc[r])
 
-    return "mov%s %s, %s" % (s, source, dest)
+    return f"mov{s} {source}, {dest}"
 
 with open(sys.argv[1]) as f:
     asm = f.readlines()

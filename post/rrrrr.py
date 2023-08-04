@@ -25,7 +25,7 @@ with open(sys.argv[1]) as f:
 with open(sys.argv[1], 'w') as f:
     for l in asm:
         if l.startswith("mov"):
-            f.write("#constant> " + l)
+            f.write(f"#constant> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:
@@ -65,7 +65,7 @@ with open(sys.argv[1], 'w') as f:
 
     for l in asm:
         if l.startswith("mov"):
-            f.write("#rrr> " + l)
+            f.write(f"#rrr> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:
@@ -91,7 +91,7 @@ with open(sys.argv[1], 'w') as f:
 
             f.write("rcr%s %s\n" % (s, source))
 
-            for i in range(0,b):
+            for _ in range(0,b):
                 f.write("rcr%s %s\n" % (s, reg))
                 f.write("sar%s %s\n" % (s, reg))
                 f.write("rcl%s %s\n" % (s, reg))
@@ -99,7 +99,7 @@ with open(sys.argv[1], 'w') as f:
                 f.write("rcl%s %s\n" % (s, reg))
                 f.write("rcr%s %s\n" % (s, source))
 
-            for i in range(0,b):
+            for _ in range(0,b):
                 f.write("rcr%s %s\n" % (s, t))
                 f.write("rcr%s %s\n" % (s, dest))
 

@@ -35,7 +35,7 @@ with open(sys.argv[1], 'w') as f:
 
             # NOTE: requires M/o/Vfuscator to only produce dword constants
             if source.startswith("$"):
-                f.write("#constant> " + l)
+                f.write(f"#constant> {l}")
 
                 # have to jump through some hoops due to as and ld limitations
                 # on absolutes 
@@ -61,7 +61,7 @@ asm = [l.replace('ebx', 'ebp') for l in asm]
 with open(sys.argv[1], 'w') as f:
     for l in asm:
         if l.startswith("mov"):
-            f.write("#xadd> " + l)
+            f.write(f"#xadd> {l}")
 
             tok = l.find(",", l.find(")"))
             if tok == -1:
@@ -85,10 +85,10 @@ with open(sys.argv[1], 'w') as f:
             # ridiculous register shuffling necessary b/c ebx is 
             # our last byte addressable register
 
-            for i in xrange(0,b):
+            for _ in xrange(0,b):
                 f.write("xadd%s %s, %s\n" % (s, reg, reg))
 
-            for i in xrange(0,b):
+            for _ in xrange(0,b):
                 f.write("xaddl %esi, %esi\n")
 
             f.write("xadd%s %s, %s\n" % (s, reg, source))
@@ -96,7 +96,7 @@ with open(sys.argv[1], 'w') as f:
 
             f.write("xadd%s %s, %s\n" % (s, reg, dest))
 
-            for i in xrange(0,b):
+            for _ in xrange(0,b):
                 f.write("xadd%s %s, %s\n" % (s, reg, dest))
                 f.write("xadd%s %s, %s\n" % (s, reg, reg))
 
